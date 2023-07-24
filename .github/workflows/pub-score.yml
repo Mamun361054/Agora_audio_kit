@@ -1,0 +1,39 @@
+name: Pub Score Checker
+on:
+  pull_request:
+    branches:
+    - "main"
+  push:
+    branches: ["main"]
+
+jobs:
+
+  package-analysis:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check Versions 🔎
+        run: |
+          export VRSN=$(grep 'String version = ' lib/models/agora_rtm_mute_request.dart | sed -e 's,.*\"\(.*\)\";,\1,')
+          export PUBSPEC_VERSION=$(grep 'version: ' pubspec.yaml | sed -e 's,.*: \(.*\),\1,')
+          if [ "$PUBSPEC_VERSION" != "$VRSN" ]; then
+            echo "Version in 'lib/models/agora_rtm_mute_request.dart' does not match pubspec.";
+            exit 1;
+          fi
+      - uses: axel-op/dart-package-analyzer@v3
+        id: analysis
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check scores
+        env:
+          TOTAL: ${{ steps.analysis.outputs.total }}
+          TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+        run: |
+          echo Score is: $TOTAL
+          if (( $TOTAL < 120 ))
+          then
+            echo Pub Score too low.
+            exit 1
+          fi
