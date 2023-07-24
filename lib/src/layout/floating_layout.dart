@@ -600,15 +600,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                                   : Text("Please turn off your camera"),
                             TextButton(
                               onPressed: () {
-                                widget.client.sessionController.value
-                                            .showMicMessage &&
-                                        !widget.client.sessionController.value
-                                            .showCameraMessage
-                                    ? toggleMute(
-                                        sessionController:
-                                            widget.client.sessionController,
-                                      )
-                                    : toggleCamera(
+                                toggleMute(
                                         sessionController:
                                             widget.client.sessionController,
                                       );

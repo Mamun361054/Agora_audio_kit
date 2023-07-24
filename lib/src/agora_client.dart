@@ -94,10 +94,8 @@ class AgoraClient {
       }
     }
 
-    if (agoraChannelData?.clientRoleType ==
-            ClientRoleType.clientRoleBroadcaster ||
-        agoraChannelData?.clientRoleType == null) {
-      await _sessionController.askForUserCameraAndMicPermission();
+    if (agoraChannelData?.clientRoleType == ClientRoleType.clientRoleBroadcaster || agoraChannelData?.clientRoleType == null) {
+      await _sessionController.askForUserMicPermission();
     }
     if (enabledPermission != null) {
       await enabledPermission!.request();

@@ -97,8 +97,6 @@ class _AgoraVideoButtonsState extends State<AgoraVideoButtons> {
     Map buttonMap = <BuiltInButtons, Widget>{
       BuiltInButtons.toggleMic: _muteMicButton(),
       BuiltInButtons.callEnd: _disconnectCallButton(),
-      BuiltInButtons.switchCamera: _switchCameraButton(),
-      BuiltInButtons.toggleCamera: _disableVideoButton(),
       BuiltInButtons.screenSharing: _screenSharingButton(),
       BuiltInButtons.cloudRecording: CloudRecordingButton(
         client: widget.client,
@@ -138,8 +136,6 @@ class _AgoraVideoButtonsState extends State<AgoraVideoButtons> {
                         children: <Widget>[
                           _muteMicButton(),
                           _disconnectCallButton(),
-                          _switchCameraButton(),
-                          _disableVideoButton(),
                           widget.cloudRecordingEnabled!
                               ? CloudRecordingButton(
                                   client: widget.client,
@@ -163,12 +159,6 @@ class _AgoraVideoButtonsState extends State<AgoraVideoButtons> {
                           if (widget.enabledButtons!
                               .contains(BuiltInButtons.callEnd))
                             _disconnectCallButton(),
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.switchCamera))
-                            _switchCameraButton(),
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.toggleCamera))
-                            _disableVideoButton(),
                           if (widget.enabledButtons!
                               .contains(BuiltInButtons.cloudRecording))
                             CloudRecordingButton(
@@ -266,60 +256,6 @@ class _AgoraVideoButtonsState extends State<AgoraVideoButtons> {
           );
   }
 
-  Widget _switchCameraButton() {
-    return widget.switchCameraButtonChild != null
-        ? RawMaterialButton(
-            onPressed: () => switchCamera(
-              sessionController: widget.client.sessionController,
-            ),
-            child: widget.switchCameraButtonChild,
-          )
-        : RawMaterialButton(
-            onPressed: () => switchCamera(
-              sessionController: widget.client.sessionController,
-            ),
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          );
-  }
-
-  Widget _disableVideoButton() {
-    return widget.disableVideoButtonChild != null
-        ? RawMaterialButton(
-            onPressed: () => toggleCamera(
-              sessionController: widget.client.sessionController,
-            ),
-            child: widget.disableVideoButtonChild,
-          )
-        : RawMaterialButton(
-            onPressed: () => toggleCamera(
-              sessionController: widget.client.sessionController,
-            ),
-            child: Icon(
-              widget.client.sessionController.value.isLocalVideoDisabled
-                  ? Icons.videocam_off
-                  : Icons.videocam,
-              color: widget.client.sessionController.value.isLocalVideoDisabled
-                  ? Colors.white
-                  : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor:
-                widget.client.sessionController.value.isLocalVideoDisabled
-                    ? Colors.blueAccent
-                    : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          );
-  }
 
   /// Default functionality of disconnect button is such that it pops the view and navigates the user to the previous screen.
   Future<void> _onCallEnd(BuildContext context) async {

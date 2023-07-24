@@ -19,28 +19,7 @@ Future<void> toggleMute({required SessionController sessionController}) async {
       ?.muteLocalAudioStream(sessionController.value.isLocalUserMuted);
 }
 
-/// Function to toggle enable/disable the camera
-Future<void> toggleCamera(
-    {required SessionController sessionController}) async {
-  var status = await Permission.camera.status;
-  if (sessionController.value.isLocalVideoDisabled && status.isDenied) {
-    await Permission.camera.request();
-  }
-  sessionController.value = sessionController.value.copyWith(
-      isLocalVideoDisabled: !(sessionController.value.isLocalVideoDisabled));
-  await sessionController.value.engine
-      ?.muteLocalVideoStream(sessionController.value.isLocalVideoDisabled);
-}
 
-/// Function to switch between front and rear camera
-Future<void> switchCamera(
-    {required SessionController sessionController}) async {
-  var status = await Permission.camera.status;
-  if (status.isDenied) {
-    await Permission.camera.request();
-  }
-  await sessionController.value.engine?.switchCamera();
-}
 
 /// Function to dispose the RTC and RTM engine.
 Future<void> endCall({required SessionController sessionController}) async {
