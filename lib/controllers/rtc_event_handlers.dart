@@ -61,9 +61,6 @@ Future<RtcEngineEventHandler> rtcEngineEventHandler(
   }, onFirstLocalVideoFrame: (source, width, height, elapsed) {
     agoraEventHandlers.onFirstLocalVideoFrame
         ?.call(source, width, height, elapsed);
-  }, onFirstLocalVideoFramePublished: (connection, elapsed) {
-    agoraEventHandlers.onFirstLocalVideoFramePublished
-        ?.call(connection, elapsed);
   }, onFirstRemoteAudioDecoded: (connection, uid, elapsed) {
     agoraEventHandlers.onFirstRemoteAudioDecoded
         ?.call(connection, uid, elapsed);
@@ -116,8 +113,6 @@ Future<RtcEngineEventHandler> rtcEngineEventHandler(
     agoraEventHandlers.onLastmileQuality?.call(quality);
   }, onLastmileProbeResult: (result) {
     agoraEventHandlers.onLastmileProbeResult?.call(result);
-  }, onLocalVideoStats: (connection, stats) {
-    agoraEventHandlers.onLocalVideoStats?.call(connection, stats);
   }, onLocalAudioStats: (connection, stats) {
     agoraEventHandlers.onLocalAudioStats?.call(connection, stats);
   }, onRemoteVideoStats: (connection, stats) {
