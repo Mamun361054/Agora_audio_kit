@@ -9,7 +9,7 @@ import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
 import 'package:flutter/material.dart';
 
 /// A UI class to style how the video layout looks like. Use this class to choose between the two default layouts [FloatingLayout] and [GridLayout], enable active speaker, display number of users, display mic and video state of the user.
-class AgoraVideoViewer extends StatefulWidget {
+class AgoraAudioViewer extends StatefulWidget {
   final AgoraClient client;
 
   /// Choose between two default layouts [Layout.floating] and [Layout.grid]
@@ -41,7 +41,7 @@ class AgoraVideoViewer extends StatefulWidget {
   /// Render mode for local and remote video
   final RenderModeType renderModeType;
 
-  const AgoraVideoViewer({
+  const AgoraAudioViewer({
     Key? key,
     required this.client,
     this.layoutType = Layout.grid,
@@ -57,10 +57,10 @@ class AgoraVideoViewer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AgoraVideoViewer> createState() => _AgoraVideoViewerState();
+  State<AgoraAudioViewer> createState() => _AgoraAudioViewerState();
 }
 
-class _AgoraVideoViewerState extends State<AgoraVideoViewer> {
+class _AgoraAudioViewerState extends State<AgoraAudioViewer> {
   @override
   void initState() {
     widget.client.sessionController

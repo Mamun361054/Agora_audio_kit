@@ -23,11 +23,6 @@ Future<void> toggleMute({required SessionController sessionController}) async {
 
 /// Function to dispose the RTC and RTM engine.
 Future<void> endCall({required SessionController sessionController}) async {
-  if (sessionController.value.connectionData!.screenSharingEnabled &&
-      sessionController.value.isScreenShared) {
-    await sessionController.value.engine?.stopScreenCapture();
-  }
-  await sessionController.value.engine?.stopPreview();
   await sessionController.value.engine?.leaveChannel();
   if (sessionController.value.connectionData!.rtmEnabled) {
     await sessionController.value.agoraRtmChannel?.leave();

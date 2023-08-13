@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final AgoraClient client = AgoraClient(
     agoraConnectionData: AgoraConnectionData(
-      appId: "<--Add your App Id here-->",
+      appId: "01254a6c76514e4787628f4b6bdc1786",
       channelName: "test",
       username: "user",
     ),
@@ -36,18 +36,18 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Agora VideoUIKit'),
+          title: const Text('Agora AudioUIKit'),
           centerTitle: true,
         ),
         body: SafeArea(
           child: Stack(
             children: [
-              AgoraVideoViewer(
+              AgoraAudioViewer(
                 client: client,
                 layoutType: Layout.floating,
                 enableHostControls: true, // Add this to enable host controls
               ),
-              AgoraVideoButtons(
+              AgoraAudioButtons(
                 client: client,
                 addScreenSharing: false, // Add this to enable screen sharing
               ),

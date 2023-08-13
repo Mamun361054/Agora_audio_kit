@@ -74,6 +74,6 @@ export 'models/agora_rtm_client_event_handler.dart'
 export 'models/agora_rtm_channel_event_handler.dart'
     show AgoraRtmChannelEventHandler;
 export 'src/agora_client.dart' show AgoraClient;
-export 'src/buttons/buttons.dart' show AgoraVideoButtons;
+export 'src/buttons/buttons.dart' show AgoraAudioButtons;
 export 'src/enums.dart';
-export 'src/layout/layout.dart' show AgoraVideoViewer;
+export 'src/layout/layout.dart' show AgoraAudioViewer;
