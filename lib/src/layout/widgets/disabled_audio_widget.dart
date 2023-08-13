@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Widget that is displayed when local/remote video is disabled.
-class DisabledVideoWidget extends StatefulWidget {
-  const DisabledVideoWidget({Key? key}) : super(key: key);
+/// Widget that is displayed when local/remote Audio is disabled.
+class DisabledAudioWidget extends StatefulWidget {
+  const DisabledAudioWidget({Key? key}) : super(key: key);
 
   @override
-  State<DisabledVideoWidget> createState() => _DisabledVideoWidgetState();
+  State<DisabledAudioWidget> createState() => _DisabledAudioWidgetState();
 }
 
-class _DisabledVideoWidgetState extends State<DisabledVideoWidget> {
+class _DisabledAudioWidgetState extends State<DisabledAudioWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(

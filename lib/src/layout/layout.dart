@@ -5,10 +5,10 @@ import 'package:agora_uikit/models/agora_settings.dart';
 import 'package:agora_uikit/src/layout/floating_layout.dart';
 import 'package:agora_uikit/src/layout/grid_layout.dart';
 import 'package:agora_uikit/src/layout/one_to_one_layout.dart';
-import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
+import 'package:agora_uikit/src/layout/widgets/disabled_audio_widget.dart';
 import 'package:flutter/material.dart';
 
-/// A UI class to style how the video layout looks like. Use this class to choose between the two default layouts [FloatingLayout] and [GridLayout], enable active speaker, display number of users, display mic and video state of the user.
+/// A UI class to style how the audio layout looks like. Use this class to choose between the two default layouts [FloatingLayout] and [GridLayout], enable active speaker, display number of users, display mic and audio state of the user.
 class AgoraAudioViewer extends StatefulWidget {
   final AgoraClient client;
 
@@ -27,8 +27,8 @@ class AgoraAudioViewer extends StatefulWidget {
   /// Padding of the secondary user present in the list.
   final EdgeInsets floatingLayoutSubViewPadding;
 
-  /// Widget that will be displayed when the local or remote user has disabled it's video.
-  final Widget disabledVideoWidget;
+  /// Widget that will be displayed when the local or remote user has disabled it's Audio.
+  final Widget disabledAudioWidget;
 
   /// Display the camera and microphone status of a user. This feature is only available in the [Layout.floating]
   final bool showAVState;
@@ -38,7 +38,7 @@ class AgoraAudioViewer extends StatefulWidget {
   /// Display the total number of users in a channel.
   final bool showNumberOfUsers;
 
-  /// Render mode for local and remote video
+  /// Render mode for local and remote Audio
   final RenderModeType renderModeType;
 
   const AgoraAudioViewer({
@@ -49,7 +49,7 @@ class AgoraAudioViewer extends StatefulWidget {
     this.floatingLayoutContainerWidth,
     this.floatingLayoutMainViewPadding = const EdgeInsets.fromLTRB(3, 0, 3, 3),
     this.floatingLayoutSubViewPadding = const EdgeInsets.fromLTRB(3, 3, 0, 3),
-    this.disabledVideoWidget = const DisabledVideoWidget(),
+    this.disabledAudioWidget = const DisabledAudioWidget(),
     this.showAVState = false,
     this.enableHostControls = false,
     this.showNumberOfUsers = false,
@@ -73,7 +73,7 @@ class _AgoraAudioViewerState extends State<AgoraAudioViewer> {
       case Layout.floating:
         return FloatingLayout(
           client: widget.client,
-          disabledVideoWidget: widget.disabledVideoWidget,
+          disabledAudioWidget: widget.disabledAudioWidget,
           floatingLayoutContainerHeight: widget.floatingLayoutContainerHeight,
           floatingLayoutContainerWidth: widget.floatingLayoutContainerWidth,
           floatingLayoutMainViewPadding: widget.floatingLayoutMainViewPadding,
@@ -87,19 +87,19 @@ class _AgoraAudioViewerState extends State<AgoraAudioViewer> {
         return GridLayout(
           client: widget.client,
           showNumberOfUsers: widget.showNumberOfUsers,
-          disabledVideoWidget: widget.disabledVideoWidget,
+          disabledAudioWidget: widget.disabledAudioWidget,
           renderModeType: widget.renderModeType,
         );
       case Layout.oneToOne:
         return OneToOneLayout(
           client: widget.client,
-          disabledVideoWidget: widget.disabledVideoWidget,
+          disabledAudioWidget: widget.disabledAudioWidget,
           renderModeType: widget.renderModeType,
         );
       default:
         return FloatingLayout(
           client: widget.client,
-          disabledVideoWidget: widget.disabledVideoWidget,
+          disabledAudioWidget: widget.disabledAudioWidget,
           floatingLayoutContainerHeight: widget.floatingLayoutContainerHeight,
           floatingLayoutContainerWidth: widget.floatingLayoutContainerWidth,
           floatingLayoutMainViewPadding: widget.floatingLayoutMainViewPadding,

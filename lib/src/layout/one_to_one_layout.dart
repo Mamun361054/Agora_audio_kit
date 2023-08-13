@@ -1,13 +1,13 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/agora_uikit.dart';
-import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
+import 'package:agora_uikit/src/layout/widgets/disabled_audio_widget.dart';
 import 'package:flutter/material.dart';
 
 class OneToOneLayout extends StatefulWidget {
   final AgoraClient client;
 
   /// Widget that will be displayed when the local or remote user has disabled it's video.
-  final Widget? disabledVideoWidget;
+  final Widget? disabledAudioWidget;
 
   /// Display the camera and microphone status of a user. This feature is only available in the [Layout.floating]
   final bool? showAVState;
@@ -21,7 +21,7 @@ class OneToOneLayout extends StatefulWidget {
   const OneToOneLayout({
     Key? key,
     required this.client,
-    this.disabledVideoWidget = const DisabledVideoWidget(),
+    this.disabledAudioWidget = const DisabledAudioWidget(),
     this.showAVState,
     this.enableHostControl,
     this.renderModeType = RenderModeType.renderModeHidden,
@@ -84,7 +84,7 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
                   child: Container(
                     child: widget.client.sessionController.value.users[0]
                             .videoDisabled
-                        ? widget.disabledVideoWidget
+                        ? widget.disabledAudioWidget
                         : Stack(
                             children: [
                               Container(
@@ -128,7 +128,7 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
         : Expanded(
             child: Container(
               child: widget.client.sessionController.value.isLocalVideoDisabled
-                  ? widget.disabledVideoWidget
+                  ? widget.disabledAudioWidget
                   : Stack(
                       children: [
                         Container(

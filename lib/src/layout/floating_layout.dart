@@ -2,7 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:agora_uikit/controllers/rtc_buttons.dart';
 import 'package:agora_uikit/models/agora_settings.dart';
-import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
+import 'package:agora_uikit/src/layout/widgets/disabled_audio_widget.dart';
 import 'package:agora_uikit/src/layout/widgets/host_controls.dart';
 import 'package:agora_uikit/src/layout/widgets/number_of_users.dart';
 import 'package:agora_uikit/src/layout/widgets/user_av_state_widget.dart';
@@ -24,7 +24,7 @@ class FloatingLayout extends StatefulWidget {
   final EdgeInsets floatingLayoutSubViewPadding;
 
   /// Widget that will be displayed when the local or remote user has disabled it's video.
-  final Widget disabledVideoWidget;
+  final Widget disabledAudioWidget;
 
   /// Display the camera and microphone status of a user. This feature is only available in the [Layout.floating]
   final bool? showAVState;
@@ -48,7 +48,7 @@ class FloatingLayout extends StatefulWidget {
     this.floatingLayoutContainerWidth,
     this.floatingLayoutMainViewPadding = const EdgeInsets.fromLTRB(3, 0, 3, 3),
     this.floatingLayoutSubViewPadding = const EdgeInsets.fromLTRB(3, 3, 0, 3),
-    this.disabledVideoWidget = const DisabledVideoWidget(),
+    this.disabledAudioWidget = const DisabledAudioWidget(),
     this.showAVState = false,
     this.enableHostControl = false,
     this.showNumberOfUsers,
@@ -161,7 +161,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                                                         ],
                                                       )
                                                     : widget
-                                                        .disabledVideoWidget,
+                                                        .disabledAudioWidget,
                                                 Positioned.fill(
                                                   child: Align(
                                                     alignment:
@@ -221,7 +221,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                                                   Container(
                                                     color: Colors.black,
                                                   ),
-                                                  widget.disabledVideoWidget,
+                                                  widget.disabledAudioWidget,
                                                   Positioned.fill(
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -449,7 +449,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                             padding: widget.floatingLayoutMainViewPadding,
                             child: widget.client.sessionController.value
                                     .mainAgoraUser.videoDisabled
-                                ? widget.disabledVideoWidget
+                                ? widget.disabledAudioWidget
                                 : Column(
                                     children: [
                                       _videoView(_getRemoteViews(widget
@@ -495,7 +495,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                                     .isLocalVideoDisabled &&
                                 !widget.client.sessionController.value
                                     .isScreenShared
-                            ? widget.disabledVideoWidget
+                            ? widget.disabledAudioWidget
                             : Stack(
                                 children: [
                                   Container(
@@ -526,7 +526,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
                     !widget.client.sessionController.value.isScreenShared
                 ? Column(
                     children: [
-                      Expanded(child: widget.disabledVideoWidget),
+                      Expanded(child: widget.disabledAudioWidget),
                     ],
                   )
                 : Container(

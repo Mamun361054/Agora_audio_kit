@@ -1,6 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/models/agora_user.dart';
-import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
+import 'package:agora_uikit/src/layout/widgets/disabled_audio_widget.dart';
 import 'package:agora_uikit/src/layout/widgets/number_of_users.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_uikit/agora_uikit.dart';
@@ -11,17 +11,17 @@ class GridLayout extends StatefulWidget {
   /// Display the total number of users in a channel.
   final bool? showNumberOfUsers;
 
-  /// Widget that will be displayed when the local or remote user has disabled it's video.
-  final Widget? disabledVideoWidget;
+  /// Widget that will be displayed when the local or remote user has disabled it's audio.
+  final Widget? disabledAudioWidget;
 
-  /// Render mode for local and remote video
+  /// Render mode for local and remote audio
   final RenderModeType renderModeType;
 
   const GridLayout({
     Key? key,
     required this.client,
     this.showNumberOfUsers,
-    this.disabledVideoWidget = const DisabledVideoWidget(),
+    this.disabledAudioWidget = const DisabledAudioWidget(),
     this.renderModeType = RenderModeType.renderModeHidden,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class _GridLayoutState extends State<GridLayout> {
       widget.client.sessionController.value.isLocalVideoDisabled
           ? list.add(
               DisabledVideoStfWidget(
-                disabledVideoWidget: widget.disabledVideoWidget,
+                disabledVideoWidget: widget.disabledAudioWidget,
               ),
             )
           : list.add(
@@ -60,7 +60,7 @@ class _GridLayoutState extends State<GridLayout> {
         user.videoDisabled
             ? list.add(
                 DisabledVideoStfWidget(
-                  disabledVideoWidget: widget.disabledVideoWidget,
+                  disabledVideoWidget: widget.disabledAudioWidget,
                 ),
               )
             : list.add(
