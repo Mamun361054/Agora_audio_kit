@@ -31,23 +31,10 @@ class AgoraAudioButtons extends StatefulWidget {
   /// Use this to style the mute mic button as per your liking while still keeping the default functionality.
   final Widget? muteButtonChild;
 
-  /// Use this to style the switch camera button as per your liking while still keeping the default functionality.
-  final Widget? switchCameraButtonChild;
-
-  /// Use this to style the disabled video button as per your liking while still keeping the default functionality.
-  final Widget? disableVideoButtonChild;
-
-  final Widget? screenSharingButtonWidget;
-
   final Widget? cloudRecordingButtonWidget;
 
   /// Agora VideoUIKit takes care of leaving the channel and destroying the engine. But if you want to add any other functionality to the disconnect button, use this.
   final Function()? onDisconnect;
-
-  /// Adds Screen Sharing button to the layout and let's user share their screen using the same. Currently only on Android and iOS. The deafult value is set to `false`. So, if you want to add screen sharing set [addScreenSharing] to `true`.
-  ///
-  /// Note: This feature is currently in beta
-  final bool? addScreenSharing;
 
   final bool? cloudRecordingEnabled;
 
@@ -62,12 +49,8 @@ class AgoraAudioButtons extends StatefulWidget {
     this.buttonAlignment = Alignment.bottomCenter,
     this.disconnectButtonChild,
     this.muteButtonChild,
-    this.switchCameraButtonChild,
-    this.disableVideoButtonChild,
-    this.screenSharingButtonWidget,
     this.cloudRecordingButtonWidget,
     this.onDisconnect,
-    this.addScreenSharing = false,
     this.cloudRecordingEnabled = false,
   }) : super(key: key);
 
@@ -97,7 +80,6 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
     Map buttonMap = <BuiltInButtons, Widget>{
       BuiltInButtons.toggleMic: _muteMicButton(),
       BuiltInButtons.callEnd: _disconnectCallButton(),
-      BuiltInButtons.screenSharing: _screenSharingButton(),
       BuiltInButtons.cloudRecording: CloudRecordingButton(
         client: widget.client,
       ),
@@ -141,9 +123,6 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
                                   client: widget.client,
                                 )
                               : Container(),
-                          widget.addScreenSharing!
-                              ? _screenSharingButton()
-                              : Container(),
                           if (widget.extraButtons != null)
                             for (var i = 0;
                                 i < widget.extraButtons!.length;
@@ -153,24 +132,14 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
                       )
                     : Row(
                         children: [
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.toggleMic))
+                          if (widget.enabledButtons!.contains(BuiltInButtons.toggleMic))
                             _muteMicButton(),
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.callEnd))
+                          if (widget.enabledButtons!.contains(BuiltInButtons.callEnd))
                             _disconnectCallButton(),
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.cloudRecording))
-                            CloudRecordingButton(
-                              client: widget.client,
-                            ),
-                          if (widget.enabledButtons!
-                              .contains(BuiltInButtons.screenSharing))
-                            _screenSharingButton(),
+                          if (widget.enabledButtons!.contains(BuiltInButtons.cloudRecording))
+                            CloudRecordingButton(client: widget.client),
                           if (widget.extraButtons != null)
-                            for (var i = 0;
-                                i < widget.extraButtons!.length;
-                                i++)
+                            for (var i = 0; i < widget.extraButtons!.length; i++)
                               widget.extraButtons![i]
                         ],
                       ),
@@ -180,34 +149,6 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
         ],
       ),
     );
-  }
-
-  Widget _screenSharingButton() {
-    return widget.screenSharingButtonWidget != null
-        ? RawMaterialButton(
-            onPressed: () =>
-                shareScreen(sessionController: widget.client.sessionController),
-            child: widget.screenSharingButtonWidget,
-          )
-        : RawMaterialButton(
-            onPressed: () =>
-                shareScreen(sessionController: widget.client.sessionController),
-            child: Icon(
-              widget.client.sessionController.value.turnOnScreenSharing
-                  ? Icons.stop_screen_share_outlined
-                  : Icons.screen_share_outlined,
-              color: widget.client.sessionController.value.turnOnScreenSharing
-                  ? Colors.white
-                  : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: widget.client.sessionController.value.turnOnScreenSharing
-                ? Colors.blueAccent
-                : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          );
   }
 
   Widget _muteMicButton() {

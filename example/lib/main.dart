@@ -44,12 +44,11 @@ class _MyAppState extends State<MyApp> {
             children: [
               AgoraAudioViewer(
                 client: client,
-                layoutType: Layout.floating,
+                layoutType: Layout.oneToOne,
                 enableHostControls: true, // Add this to enable host controls
               ),
               AgoraAudioButtons(
                 client: client,
-                addScreenSharing: false, // Add this to enable screen sharing
               ),
             ],
           ),

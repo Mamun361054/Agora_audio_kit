@@ -1,7 +1,9 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:agora_uikit/src/layout/widgets/disabled_audio_widget.dart';
+import 'package:agora_uikit/src/layout/widgets/text_with_tap.dart';
 import 'package:flutter/material.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class OneToOneLayout extends StatefulWidget {
   final AgoraClient client;
@@ -18,7 +20,7 @@ class OneToOneLayout extends StatefulWidget {
   /// Render mode for local and remote video
   final RenderModeType? renderModeType;
 
-  const OneToOneLayout({
+   OneToOneLayout({
     Key? key,
     required this.client,
     this.disabledAudioWidget = const DisabledAudioWidget(),
@@ -32,38 +34,27 @@ class OneToOneLayout extends StatefulWidget {
 }
 
 class _OneToOneLayoutState extends State<OneToOneLayout> {
+
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+  String callDuration = "00:00";
+
   Offset position = Offset(5, 5);
 
-  Widget _getLocalViews() {
-    return widget.client.sessionController.value.isScreenShared
-        ? AgoraVideoView(
-            controller: VideoViewController(
-              rtcEngine: widget.client.sessionController.value.engine!,
-              canvas: const VideoCanvas(
-                uid: 0,
-                sourceType: VideoSourceType.videoSourceScreen,
-              ),
-            ),
-          )
-        : AgoraVideoView(
-            controller: VideoViewController(
-              rtcEngine: widget.client.sessionController.value.engine!,
-              canvas: VideoCanvas(uid: 0, renderMode: widget.renderModeType),
-            ),
-          );
-  }
 
   Widget _getRemoteViews(int uid) {
+
+    _stopWatchTimer.onStartTimer();
+
     return AgoraVideoView(
-      controller: VideoViewController.remote(
-        rtcEngine: widget.client.sessionController.value.engine!,
-        canvas: VideoCanvas(uid: uid, renderMode: widget.renderModeType),
-        connection: RtcConnection(
-          channelId:
+          controller: VideoViewController.remote(
+            rtcEngine: widget.client.sessionController.value.engine!,
+            canvas: VideoCanvas(uid: uid, renderMode: widget.renderModeType),
+            connection: RtcConnection(
+              channelId:
               widget.client.sessionController.value.connectionData!.channelName,
-        ),
-      ),
-    );
+            ),
+          ),
+        );
   }
 
   /// Video view wrapper
@@ -80,46 +71,64 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
         ? Expanded(
             child: Stack(
               children: [
-                Positioned.fill(
-                  child: Container(
-                    child: widget.client.sessionController.value.users[0]
-                            .videoDisabled
-                        ? widget.disabledAudioWidget
-                        : Stack(
-                            children: [
-                              Container(
-                                color: Colors.black,
-                                child: Center(
-                                  child: Text(
-                                    'Remote User',
-                                    style: TextStyle(color: Colors.white),
+                Container(
+                  child: widget.client.sessionController.value.users[0]
+                          .videoDisabled
+                      ? widget.disabledAudioWidget
+                      : Stack(
+                          children: [
+                            Container(
+                              color: Colors.black,
+                              padding: const EdgeInsets.all(16.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                child: ColoredBox(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  child: Center(
+                                    child: Text(
+                                      'You',
+                                      style: TextStyle(color: Colors.white,fontSize: 24.0),
+                                    ),
                                   ),
                                 ),
                               ),
-                              Positioned.fill(
-                                child: Column(
-                                  children: [
-                                    _videoView(
-                                      _getRemoteViews(widget.client.users[0]),
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            Positioned.fill(
+                              child: Column(
+                                children: [
+                                  _videoView(
+                                    _getRemoteViews(widget.client.users[0]),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                  ),
+                            ),
+                          ],
+                        ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, right: 4),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: _getLocalViews()),
-                    ),
+                Positioned(
+                  top: 55.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: StreamBuilder<int>(
+                    stream: _stopWatchTimer.secondTime,
+                    initialData: 0,
+                    builder: (context, snap) {
+                      final value = snap.data;
+                      callDuration = formatTime(value!);
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: TextWithTap(
+                              formatTime(value),
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -133,22 +142,31 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
                       children: [
                         Container(
                           color: Colors.black,
-                          child: Center(
-                            child: Text(
-                              'Local User',
-                              style: TextStyle(color: Colors.white),
+                          padding: const EdgeInsets.all(16.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                            child: ColoredBox(
+                              color: Colors.grey.withOpacity(0.5),
+                              child: Center(
+                                child: Text(
+                                  'You',
+                                  style: TextStyle(color: Colors.white,fontSize: 24.0),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        Column(
-                          children: [
-                            _videoView(_getLocalViews()),
-                          ],
                         ),
                       ],
                     ),
             ),
           );
+  }
+
+  @override
+  void dispose() async {
+    _stopWatchTimer.onStopTimer();
+    await _stopWatchTimer.dispose();
+    super.dispose();
   }
 
   @override
@@ -163,4 +181,21 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
           );
         });
   }
+}
+
+
+String formatTime(int second) {
+var hour = (second / 3600).floor();
+var minutes = ((second - hour * 3600) / 60).floor();
+var seconds = (second - hour * 3600 - minutes * 60).floor();
+
+var secondExtraZero = (seconds < 10) ? "0" : "";
+var minuteExtraZero = (minutes < 10) ? "0" : "";
+var hourExtraZero = (hour < 10) ? "0" : "";
+
+if (hour > 0) {
+return "$hourExtraZero$hour:$minuteExtraZero$minutes:$secondExtraZero$seconds";
+} else {
+return "$minuteExtraZero$minutes:$secondExtraZero$seconds";
+}
 }
