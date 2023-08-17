@@ -69,8 +69,7 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
             child: Stack(
               children: [
                 Container(
-                  child: widget
-                          .client.sessionController.value.users[0].videoDisabled
+                  child: widget.client.sessionController.value.users[0].videoDisabled
                       ? widget.disabledAudioWidget
                       : Stack(
                           children: [
