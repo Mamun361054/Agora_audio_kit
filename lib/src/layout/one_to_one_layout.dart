@@ -20,7 +20,7 @@ class OneToOneLayout extends StatefulWidget {
   /// Render mode for local and remote video
   final RenderModeType? renderModeType;
 
-   OneToOneLayout({
+  OneToOneLayout({
     Key? key,
     required this.client,
     this.disabledAudioWidget = const DisabledAudioWidget(),
@@ -34,27 +34,24 @@ class OneToOneLayout extends StatefulWidget {
 }
 
 class _OneToOneLayoutState extends State<OneToOneLayout> {
-
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   String callDuration = "00:00";
 
   Offset position = Offset(5, 5);
 
-
   Widget _getRemoteViews(int uid) {
-
     _stopWatchTimer.onStartTimer();
 
     return AgoraVideoView(
-          controller: VideoViewController.remote(
-            rtcEngine: widget.client.sessionController.value.engine!,
-            canvas: VideoCanvas(uid: uid, renderMode: widget.renderModeType),
-            connection: RtcConnection(
-              channelId:
+      controller: VideoViewController.remote(
+        rtcEngine: widget.client.sessionController.value.engine!,
+        canvas: VideoCanvas(uid: uid, renderMode: widget.renderModeType),
+        connection: RtcConnection(
+          channelId:
               widget.client.sessionController.value.connectionData!.channelName,
-            ),
-          ),
-        );
+        ),
+      ),
+    );
   }
 
   /// Video view wrapper
@@ -72,8 +69,8 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
             child: Stack(
               children: [
                 Container(
-                  child: widget.client.sessionController.value.users[0]
-                          .videoDisabled
+                  child: widget
+                          .client.sessionController.value.users[0].videoDisabled
                       ? widget.disabledAudioWidget
                       : Stack(
                           children: [
@@ -81,13 +78,15 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
                               color: Colors.black,
                               padding: const EdgeInsets.all(16.0),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
                                 child: ColoredBox(
                                   color: Colors.grey.withOpacity(0.5),
                                   child: Center(
                                     child: Text(
                                       'You',
-                                      style: TextStyle(color: Colors.white,fontSize: 24.0),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24.0),
                                     ),
                                   ),
                                 ),
@@ -136,30 +135,30 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
           )
         : Expanded(
             child: Container(
-              child: widget.client.sessionController.value.isLocalVideoDisabled
-                  ? widget.disabledAudioWidget
-                  : Stack(
-                      children: [
-                        Container(
-                          color: Colors.black,
-                          padding: const EdgeInsets.all(16.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                            child: ColoredBox(
-                              color: Colors.grey.withOpacity(0.5),
-                              child: Center(
-                                child: Text(
-                                  'You',
-                                  style: TextStyle(color: Colors.white,fontSize: 24.0),
-                                ),
+            child: widget.client.sessionController.value.isLocalVideoDisabled
+                ? widget.disabledAudioWidget
+                : Stack(
+                    children: [
+                      Container(
+                        color: Colors.black,
+                        padding: const EdgeInsets.all(16.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          child: ColoredBox(
+                            color: Colors.grey.withOpacity(0.5),
+                            child: Center(
+                              child: Text(
+                                'You',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 24.0),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-            ),
-          );
+                      ),
+                    ],
+                  ),
+          ));
   }
 
   @override
@@ -183,19 +182,18 @@ class _OneToOneLayoutState extends State<OneToOneLayout> {
   }
 }
 
-
 String formatTime(int second) {
-var hour = (second / 3600).floor();
-var minutes = ((second - hour * 3600) / 60).floor();
-var seconds = (second - hour * 3600 - minutes * 60).floor();
+  var hour = (second / 3600).floor();
+  var minutes = ((second - hour * 3600) / 60).floor();
+  var seconds = (second - hour * 3600 - minutes * 60).floor();
 
-var secondExtraZero = (seconds < 10) ? "0" : "";
-var minuteExtraZero = (minutes < 10) ? "0" : "";
-var hourExtraZero = (hour < 10) ? "0" : "";
+  var secondExtraZero = (seconds < 10) ? "0" : "";
+  var minuteExtraZero = (minutes < 10) ? "0" : "";
+  var hourExtraZero = (hour < 10) ? "0" : "";
 
-if (hour > 0) {
-return "$hourExtraZero$hour:$minuteExtraZero$minutes:$secondExtraZero$seconds";
-} else {
-return "$minuteExtraZero$minutes:$secondExtraZero$seconds";
-}
+  if (hour > 0) {
+    return "$hourExtraZero$hour:$minuteExtraZero$minutes:$secondExtraZero$seconds";
+  } else {
+    return "$minuteExtraZero$minutes:$secondExtraZero$seconds";
+  }
 }
