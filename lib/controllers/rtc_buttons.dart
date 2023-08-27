@@ -19,6 +19,15 @@ Future<void> toggleMute({required SessionController sessionController}) async {
       ?.muteLocalAudioStream(sessionController.value.isLocalUserMuted);
 }
 
+/// Function to headset/speaker at the call
+Future<void> toggleToSpeaker({required SessionController sessionController}) async {
+  var status = await Permission.microphone.status;
+  if (sessionController.value.isLocalUserMuted && status.isDenied) {
+    await Permission.microphone.request();
+  }
+  sessionController.value = sessionController.value.copyWith(isActiveSpeakerDisabled: !(sessionController.value.isActiveSpeakerDisabled));
+  await sessionController.value.engine?.setEnableSpeakerphone(sessionController.value.isActiveSpeakerDisabled);
+}
 
 
 /// Function to dispose the RTC and RTM engine.

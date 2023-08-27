@@ -31,6 +31,9 @@ class AgoraAudioButtons extends StatefulWidget {
   /// Use this to style the mute mic button as per your liking while still keeping the default functionality.
   final Widget? muteButtonChild;
 
+  /// Use this to style the speaker button as per your liking while still keeping the default functionality.
+  final Widget? speakerButtonChild;
+
   final Widget? cloudRecordingButtonWidget;
 
   /// Agora VideoUIKit takes care of leaving the channel and destroying the engine. But if you want to add any other functionality to the disconnect button, use this.
@@ -49,6 +52,7 @@ class AgoraAudioButtons extends StatefulWidget {
     this.buttonAlignment = Alignment.bottomCenter,
     this.disconnectButtonChild,
     this.muteButtonChild,
+    this.speakerButtonChild,
     this.cloudRecordingButtonWidget,
     this.onDisconnect,
     this.cloudRecordingEnabled = false,
@@ -79,6 +83,7 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
 
     Map buttonMap = <BuiltInButtons, Widget>{
       BuiltInButtons.toggleMic: _muteMicButton(),
+      BuiltInButtons.toggleSpeaker: _speakerButton(),
       BuiltInButtons.callEnd: _disconnectCallButton(),
       BuiltInButtons.cloudRecording: CloudRecordingButton(
         client: widget.client,
@@ -117,6 +122,7 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           _muteMicButton(),
+                          _speakerButton(),
                           _disconnectCallButton(),
                           widget.cloudRecordingEnabled!
                               ? CloudRecordingButton(
@@ -134,6 +140,8 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
                         children: [
                           if (widget.enabledButtons!.contains(BuiltInButtons.toggleMic))
                             _muteMicButton(),
+                          if (widget.enabledButtons!.contains(BuiltInButtons.toggleSpeaker))
+                            _speakerButton(),
                           if (widget.enabledButtons!.contains(BuiltInButtons.callEnd))
                             _disconnectCallButton(),
                           if (widget.enabledButtons!.contains(BuiltInButtons.cloudRecording))
@@ -148,6 +156,35 @@ class _AgoraAudioButtonsState extends State<AgoraAudioButtons> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _speakerButton() {
+    return widget.speakerButtonChild != null
+        ? RawMaterialButton(
+      onPressed: () => toggleToSpeaker(
+        sessionController: widget.client.sessionController,
+      ),
+      child: widget.speakerButtonChild,
+    ) : RawMaterialButton(
+      onPressed: () => toggleToSpeaker(
+        sessionController: widget.client.sessionController,
+      ),
+      child: Icon(
+        !widget.client.sessionController.value.isActiveSpeakerDisabled
+            ? Icons.headset_off_sharp
+            : Icons.headphones_sharp,
+        color: !widget.client.sessionController.value.isActiveSpeakerDisabled
+            ? Colors.white
+            : Colors.blueAccent,
+        size: 20.0,
+      ),
+      shape: CircleBorder(),
+      elevation: 2.0,
+      fillColor: !widget.client.sessionController.value.isActiveSpeakerDisabled
+          ? Colors.blueAccent
+          : Colors.white,
+      padding: const EdgeInsets.all(12.0),
     );
   }
 

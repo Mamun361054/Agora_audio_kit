@@ -5,11 +5,14 @@ enum BuiltInButtons {
   switchCamera,
   toggleCamera,
   toggleMic,
+  toggleSpeaker,
   screenSharing,
   cloudRecording
 }
 
 enum MicState { muted, unmuted }
+
+enum SpeakerState { speaker, headset }
 
 enum CameraState { enabled, disabled }
 
